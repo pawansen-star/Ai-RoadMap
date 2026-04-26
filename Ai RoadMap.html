@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Arya AI RoadMap - Counselling 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0d0d14; --paper: #f5f2ec; --accent: #e85d26;
+  --accent2: #2563c9; --soft: #e8e4db; --muted: #8a8578;
+  --success: #1a9e6e; --gold: #c9930a; --purple: #7c3aed;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ── WELCOME ── */
+#screen-welcome {
+  background: var(--ink); color: var(--paper);
+  align-items: center; justify-content: center;
+  text-align: center; padding: 48px 28px;
+  position: relative; overflow: hidden;
+}
+.welcome-logo {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; margin-bottom: 20px; position: relative;
+}
+.logo-arya {
+  font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800;
+  color: var(--paper); letter-spacing: 6px;
+}
+.logo-ai {
+  font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700;
+  color: var(--accent); letter-spacing: 2px;
+  background: rgba(232,93,38,0.12); padding: 4px 12px; border-radius: 4px;
+  border: 1.5px solid rgba(232,93,38,0.35);
+}
+#screen-welcome::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%,#1e2a6b55 0%,transparent 70%),
+              radial-gradient(ellipse 60% 40% at 80% 90%,#e85d2630 0%,transparent 60%);
+}
+.welcome-badge {
+  display: inline-block; background: var(--accent); color: #fff;
+  font-family: 'Syne',sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 6px 18px; border-radius: 2px; margin-bottom: 28px; position: relative;
+}
+.welcome-title { font-family: 'Syne',sans-serif; font-size: clamp(38px,8vw,68px); font-weight: 800; line-height: 1; position: relative; margin-bottom: 8px; }
+.welcome-title span { color: var(--accent); }
+.welcome-sub { font-size: 16px; color: #b0aca3; font-weight: 300; margin-bottom: 48px; position: relative; }
+.welcome-divider { width: 60px; height: 2px; background: var(--accent); margin: 0 auto 48px; position: relative; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent); color: #fff;
+  font-family: 'Syne',sans-serif; font-size: 16px; font-weight: 700;
+  padding: 18px 40px; border: none; border-radius: 4px;
+  cursor: pointer; letter-spacing: 1px; position: relative;
+  transition: transform 0.15s; -webkit-tap-highlight-color: transparent;
+}
+.btn-primary:active { transform: scale(0.97); }
+.welcome-stats { display: flex; gap: 36px; justify-content: center; margin-top: 56px; position: relative; }
+.stat { text-align: center; }
+.stat-num { font-family: 'Syne',sans-serif; font-size: 26px; font-weight: 800; color: var(--paper); }
+.stat-label { font-size: 11px; color: #7a766e; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── QUESTIONS ── */
+#screen-questions { background: var(--paper); }
+.q-header { background: var(--ink); color: var(--paper); padding: 22px 28px 18px; display: flex; align-items: center; justify-content: space-between; }
+.q-header-title { font-family: 'Syne',sans-serif; font-size: 17px; font-weight: 700; }
+.q-progress-text { font-size: 13px; color: #8a8578; }
+.progress-bar-wrap { background: var(--ink); padding: 0 28px 14px; }
+.progress-bar { height: 3px; background: #2a2a38; border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; }
+.q-body { flex: 1; padding: 32px 28px 28px; display: flex; flex-direction: column; }
+.q-number { font-family: 'Syne',sans-serif; font-size: 64px; font-weight: 800; color: var(--soft); line-height: 1; margin-bottom: -12px; user-select: none; }
+.q-text { font-family: 'Syne',sans-serif; font-size: clamp(18px,3.5vw,26px); font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
+.q-hint { font-size: 13px; color: var(--muted); margin-bottom: 24px; font-style: italic; }
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.options-grid.single-col { grid-template-columns: 1fr; }
+.options-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+.option-btn {
+  background: #fff; border: 2px solid var(--soft); border-radius: 8px;
+  padding: 14px 16px; cursor: pointer; text-align: left;
+  transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.option-btn:active { transform: scale(0.98); }
+.option-btn.selected { border-color: var(--accent); background: #fdf3ee; }
+.opt-dot {
+  width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--soft);
+  flex-shrink: 0; margin-top: 2px;
+  transition: background 0.15s,border-color 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.option-btn.selected .opt-dot { background: var(--accent); border-color: var(--accent); }
+.option-btn.selected .opt-dot::after { content:''; width:6px; height:6px; border-radius:50%; background:#fff; }
+.opt-label { font-size: 14px; font-weight: 500; color: var(--ink); line-height: 1.35; }
+.opt-sub { font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.q-input {
+  width: 100%; padding: 14px 18px; font-family: 'DM Sans',sans-serif; font-size: 16px;
+  border: 2px solid var(--soft); border-radius: 8px; background: #fff; color: var(--ink);
+  outline: none; transition: border-color 0.15s; resize: none;
+}
+.q-input:focus { border-color: var(--accent2); }
+.q-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
+.btn-ghost {
+  background: transparent; border: 2px solid var(--soft); color: var(--muted);
+  font-family: 'Syne',sans-serif; font-size: 14px; font-weight: 700;
+  padding: 11px 22px; border-radius: 4px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.btn-next {
+  background: var(--ink); color: var(--paper); border: none;
+  font-family: 'Syne',sans-serif; font-size: 14px; font-weight: 700;
+  padding: 13px 28px; border-radius: 4px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; transition: all 0.15s;
+}
+.btn-next:active { transform: scale(0.97); }
+.btn-next:disabled { opacity: 0.4; pointer-events: none; }
+.btn-next.accent { background: var(--accent); }
+
+/* ── ROADMAP ── */
+#screen-roadmap { background: var(--paper); padding-bottom: 60px; }
+.rm-header { background: var(--ink); padding: 24px 28px 20px; color: var(--paper); }
+.rm-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.rm-badge { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.rm-student-name { font-family: 'Syne',sans-serif; font-size: 24px; font-weight: 800; line-height: 1; }
+.rm-tagline { font-size: 13px; color: #8a8578; margin-top: 4px; }
+.btn-restart {
+  background: #1e1e28; border: none; color: #8a8578;
+  font-family: 'Syne',sans-serif; font-size: 12px; font-weight: 700;
+  padding: 8px 14px; border-radius: 4px; cursor: pointer;
+  letter-spacing: 1px; -webkit-tap-highlight-color: transparent; flex-shrink: 0;
+}
+
+/* PERSONALITY SUMMARY CARD */
+.personality-card {
+  margin: 20px 28px 0;
+  background: linear-gradient(135deg,#1e1e28 0%,#2a1a38 100%);
+  border-radius: 12px; padding: 20px;
+  color: var(--paper);
+}
+.personality-card-title { font-family: 'Syne',sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.personality-card-text { font-size: 14px; line-height: 1.7; color: #c8c4bb; }
+.personality-card-text strong { color: var(--paper); }
+
+.profile-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 28px 0; }
+.chip { display: inline-flex; align-items: center; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; }
+.chip.blue { background: #dbeafe; color: var(--accent2); }
+.chip.orange { background: #fde8dc; color: var(--accent); }
+.chip.green { background: #d1fae5; color: var(--success); }
+.chip.gold { background: #fef3c7; color: var(--gold); }
+.chip.purple { background: #ede9fe; color: var(--purple); }
+.chip.pink { background: #fce7f3; color: #be185d; }
+
+.rm-section { padding: 24px 28px 0; }
+.rm-section-title {
+  font-family: 'Syne',sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+}
+.rm-section-title::after { content:''; flex:1; height:1px; background:var(--soft); }
+
+/* YEAR TIMELINE — two columns: Technical | Grooming */
+.year-timeline { display: flex; flex-direction: column; gap: 16px; }
+.year-row { display: grid; grid-template-columns: 44px 1fr; gap: 0; }
+.year-spine { display: flex; flex-direction: column; align-items: center; }
+.year-dot {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne',sans-serif; font-size: 12px; font-weight: 800;
+  flex-shrink: 0; color: #fff;
+}
+.year-dot.y1{background:var(--accent2);} .year-dot.y2{background:var(--success);}
+.year-dot.y3{background:var(--gold);}    .year-dot.y4{background:var(--accent);}
+.year-connector { width:2px; flex:1; background:var(--soft); min-height:16px; }
+.year-cards { margin-left: 10px; }
+.year-theme-label {
+  font-family: 'Syne',sans-serif; font-size: 13px; font-weight: 700;
+  color: var(--ink); margin-bottom: 8px;
+}
+.dual-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mini-card { background: #fff; border-radius: 10px; padding: 12px 14px; border: 1.5px solid var(--soft); }
+.mini-card-head {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--soft);
+}
+.mini-card-head.tech { color: var(--accent2); }
+.mini-card-head.groom { color: var(--purple); }
+.mini-items { display: flex; flex-direction: column; gap: 5px; }
+.mini-item { display: flex; gap: 7px; font-size: 12px; color: #3a3a4a; line-height: 1.4; align-items: flex-start; }
+.mini-dot { width:5px; height:5px; border-radius:50%; margin-top:5px; flex-shrink:0; }
+
+/* GOVT JOBS */
+.govt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.govt-card { background: #fff; border-radius: 10px; padding: 14px 16px; border: 1.5px solid var(--soft); border-left: 4px solid var(--success); }
+.govt-card-title { font-family: 'Syne',sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.govt-card-org { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.govt-card-exam { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: #d1fae5; color: var(--success); }
+
+/* CAREER PATHS */
+.career-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.career-card { background: #fff; border-radius: 10px; padding: 14px 16px; border: 1.5px solid var(--soft); }
+.career-icon { font-size: 24px; margin-bottom: 6px; }
+.career-title { font-family: 'Syne',sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.career-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.career-match { display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #dbeafe; color: var(--accent2); }
+.career-match.high { background: #d1fae5; color: var(--success); }
+
+/* SKILLS */
+.skills-list { display: flex; flex-direction: column; gap: 10px; }
+.skill-row { display: flex; align-items: center; gap: 10px; }
+.skill-name { font-size: 13px; font-weight: 500; width: 130px; flex-shrink: 0; }
+.skill-bar { flex:1; height:5px; background:var(--soft); border-radius:3px; overflow:hidden; }
+.skill-fill { height:100%; border-radius:3px; }
+.skill-pct { font-size: 11px; color: var(--muted); width: 32px; text-align: right; }
+
+/* HOBBY IMPACT */
+.hobby-card {
+  background: #fff; border-radius: 12px; border: 1.5px solid var(--soft);
+  padding: 16px 18px;
+}
+.hobby-card-title { font-family: 'Syne',sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.hobby-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.hobby-tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; background: #ede9fe; color: var(--purple); }
+.hobby-text { font-size: 13px; color: #444; line-height: 1.6; }
+
+/* TIPS */
+.tips-list { display: flex; flex-direction: column; gap: 10px; }
+.tip-card { background: #fff; border-radius: 10px; padding: 13px 16px; border-left: 4px solid var(--accent); font-size: 13px; color: #3a3a4a; line-height: 1.55; }
+.tip-card.blue { border-color: var(--accent2); }
+.tip-card.green { border-color: var(--success); }
+.tip-card.purple { border-color: var(--purple); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+.fade-up { animation: fadeUp 0.35s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-logo">
+    <span class="logo-arya">ARYA</span><span class="logo-ai">&#x25B6; AI</span>
+  </div>
+  <div class="welcome-badge">Counselling 2026</div>
+  <h1 class="welcome-title">RoadMap<br><span>Your Future</span></h1>
+  <p class="welcome-sub">Technical + Personality roadmap tailored for your branch</p>
+  <div class="welcome-divider"></div>
+  <button class="btn-primary" onclick="startQuiz()">Begin Counselling &rarr;</button>
+  <div class="welcome-stats">
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Branches</div></div>
+    <div class="stat"><div class="stat-num">4yr</div><div class="stat-label">Roadmap</div></div>
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Questions</div></div>
+  </div>
+</div>
+
+<!-- QUESTIONS -->
+<div id="screen-questions" class="screen">
+  <div class="q-header">
+    <span class="q-header-title">Counselling Form</span>
+    <span class="q-progress-text" id="q-progress-text">1 of 10</span>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:10%"></div></div>
+  </div>
+  <div class="q-body" id="q-body"></div>
+</div>
+
+<!-- ROADMAP -->
+<div id="screen-roadmap" class="screen">
+  <div class="rm-header">
+    <div class="rm-header-top">
+      <div>
+        <div class="rm-badge">Personalised Roadmap</div>
+        <div class="rm-student-name" id="rm-name"></div>
+        <div class="rm-tagline" id="rm-tagline"></div>
+      </div>
+      <button class="btn-restart" onclick="restartApp()">&#8635; New</button>
+    </div>
+  </div>
+
+  <div id="rm-personality-card"></div>
+  <div class="profile-chips" id="rm-chips"></div>
+
+  <div class="rm-section">
+    <div class="rm-section-title">4-Year Technical + Grooming Roadmap</div>
+    <div class="year-timeline" id="rm-timeline"></div>
+  </div>
+
+  <div class="rm-section">
+    <div class="rm-section-title">Government Job Opportunities</div>
+    <div class="govt-grid" id="rm-govt"></div>
+  </div>
+
+  <div class="rm-section">
+    <div class="rm-section-title">Private Career Pathways</div>
+    <div class="career-grid" id="rm-careers"></div>
+  </div>
+
+  <div class="rm-section">
+    <div class="rm-section-title">Skills to Build</div>
+    <div class="skills-list" id="rm-skills"></div>
+  </div>
+
+  <div class="rm-section">
+    <div class="rm-section-title">How Your Hobbies Help You</div>
+    <div id="rm-hobby"></div>
+  </div>
+
+  <div class="rm-section">
+    <div class="rm-section-title">Counsellor Tips</div>
+    <div class="tips-list" id="rm-tips"></div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  {
+    id:"name", text:"What is the student name?",
+    hint:"Enter full name as per application", type:"text", placeholder:"e.g. Arjun Sharma"
+  },
+  {
+    id:"marks", text:"12th Grade or JEE percentile range?",
+    hint:"Select the applicable range", type:"options",
+    options:[
+      {value:"high",     label:"90 - 100%",  sub:"Top tier performance"},
+      {value:"mid-high", label:"75 - 89%",   sub:"Strong academic record"},
+      {value:"mid",      label:"60 - 74%",   sub:"Decent performance"},
+      {value:"low",      label:"Below 60%",  sub:"Needs improvement focus"}
+    ]
+  },
+  {
+    id:"interest", text:"Which branch have you taken admission in?",
+    hint:"Select your admitted branch", type:"options",
+    options:[
+      {value:"cse",    label:"CSE",             sub:"Computer Science and Engg."},
+      {value:"it",     label:"IT",              sub:"Information Technology"},
+      {value:"aids",   label:"AI and DS",       sub:"Artificial Intelligence and Data Science"},
+      {value:"csai",   label:"CS-AI",           sub:"Computer Science with AI"},
+      {value:"cyber",  label:"Cyber Security",  sub:"Network Security and Ethical Hacking"},
+      {value:"ee",     label:"EE",              sub:"Electrical Engineering"},
+      {value:"me",     label:"ME",              sub:"Mechanical Engineering"},
+      {value:"ce",     label:"CE",              sub:"Civil Engineering"}
+    ]
+  },
+  {
+    id:"strength", text:"Strongest subject in 12th?",
+    hint:"Best scoring or most enjoyed subject", type:"options",
+    options:[
+      {value:"math",      label:"Mathematics"},
+      {value:"physics",   label:"Physics"},
+      {value:"chemistry", label:"Chemistry"},
+      {value:"computers", label:"Computer Science"},
+      {value:"biology",   label:"Biology"}
+    ]
+  },
+  {
+    id:"goal", text:"Primary career goal?",
+    hint:"Long-term vision matters most", type:"options",
+    options:[
+      {value:"job",      label:"Campus Placement",  sub:"MNC or startup"},
+      {value:"higher",   label:"Higher Studies",    sub:"M.Tech, MS, MBA"},
+      {value:"govt",     label:"Government or PSU", sub:"GATE, UPSC, SSC"},
+      {value:"startup",  label:"Entrepreneurship",  sub:"Start own venture"},
+      {value:"research", label:"Research or PhD",   sub:"Academia and R&D"}
+    ]
+  },
+  {
+    id:"style", text:"Preferred learning style?",
+    hint:"Pick the closest match", type:"options",
+    options:[
+      {value:"practical",   label:"Hands-on Projects",        sub:"Build and experiment"},
+      {value:"theory",      label:"Deep Theory",              sub:"Understand core concepts"},
+      {value:"competitive", label:"Competitive Prep",         sub:"Exams and rankings"},
+      {value:"creative",    label:"Creative Problem-Solving", sub:"Design thinking"}
+    ]
+  },
+  {
+    id:"hobby", text:"Top hobbies or interests outside studies?",
+    hint:"Choose up to 2 that best fit", type:"options",
+    options:[
+      {value:"sports",   label:"&#x26BD; Sports and Fitness",   sub:"Cricket, football, gym, etc."},
+      {value:"music",    label:"&#x1F3B5; Music and Arts",       sub:"Singing, guitar, painting"},
+      {value:"gaming",   label:"&#x1F3AE; Gaming and Esports",   sub:"PC, mobile, strategy games"},
+      {value:"writing",  label:"&#x270F; Writing and Blogging",  sub:"Stories, tech blogs, journals"},
+      {value:"travel",   label:"&#x1F30D; Travel and Culture",   sub:"Exploring places and people"},
+      {value:"social",   label:"&#x1F91D; Social and Volunteering", sub:"NGO, community, events"},
+      {value:"cooking",  label:"&#x1F373; Cooking and Food",     sub:"Experimenting with recipes"},
+      {value:"tech",     label:"&#x1F4BB; Tinkering and Making", sub:"DIY, electronics, gadgets"}
+    ]
+  },
+  {
+    id:"personality", text:"Best personality description?",
+    hint:"Be honest - this shapes your grooming plan", type:"options",
+    options:[
+      {value:"introvert",  label:"Introvert",   sub:"Prefer working quietly alone"},
+      {value:"ambivert",   label:"Ambivert",    sub:"Mix of both depending on mood"},
+      {value:"extrovert",  label:"Extrovert",   sub:"Love people and conversations"},
+      {value:"leader",     label:"Natural Leader", sub:"Always organising and directing"}
+    ]
+  },
+  {
+    id:"challenge", text:"Biggest challenge expected in BTech?",
+    hint:"Be honest - it helps us advise better", type:"options",
+    options:[
+      {value:"maths",      label:"Advanced Mathematics",       sub:"Calculus, Linear Algebra"},
+      {value:"coding",     label:"Programming and Coding",     sub:"DSA, algorithms"},
+      {value:"exams",      label:"Exam Pressure",              sub:"End-sems, backlogs"},
+      {value:"placements", label:"Placement Preparation",      sub:"Aptitude, interviews"},
+      {value:"social",     label:"Networking and Communication",sub:"Soft skills"}
+    ]
+  },
+  {
+    id:"activity", text:"Interested extracurriculars?",
+    hint:"Beyond academics", type:"options",
+    options:[
+      {value:"hackathon", label:"Hackathons and Coding Contests"},
+      {value:"sports",    label:"Sports and Physical Activities"},
+      {value:"cultural",  label:"Cultural and Performing Arts"},
+      {value:"nss",       label:"NSS and Social Service"},
+      {value:"tech",      label:"Technical Clubs and Societies"}
+    ]
+  }
+];
+
+var currentQ = 0;
+var answers = {};
+
+function showScreen(id) {
+  var ss = document.querySelectorAll(".screen");
+  for (var i=0;i<ss.length;i++) ss[i].classList.remove("active");
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function startQuiz() { currentQ=0; showScreen("screen-questions"); renderQuestion(); }
+
+function renderQuestion() {
+  var q = questions[currentQ];
+  var pct = ((currentQ+1)/questions.length)*100;
+  document.getElementById("progress-fill").style.width = pct+"%";
+  document.getElementById("q-progress-text").textContent = (currentQ+1)+" of "+questions.length;
+
+  var optHTML = "";
+  if (q.type==="options") {
+    var cols = q.options.length <= 2 ? "options-grid single-col" :
+               q.options.length >= 7 ? "options-grid" : "options-grid";
+    var btns = "";
+    for (var i=0;i<q.options.length;i++) {
+      var o=q.options[i];
+      var sel = answers[q.id]===o.value ? " selected" : "";
+      var sub = o.sub ? "<div class=\"opt-sub\">"+o.sub+"</div>" : "";
+      btns += "<button class=\"option-btn"+sel+"\" onclick=\"selectOption('"+o.value+"')\">"+
+              "<div class=\"opt-dot\"></div>"+
+              "<div><div class=\"opt-label\">"+o.label+"</div>"+sub+"</div>"+
+              "</button>";
+    }
+    optHTML = "<div class=\""+cols+"\">"+btns+"</div>";
+  } else {
+    var cur = answers[q.id]||"";
+    optHTML = "<textarea class=\"q-input\" id=\"text-input\" rows=\"2\" placeholder=\""+(q.placeholder||"")+"\" oninput=\"handleTextInput(this.value)\">"+cur+"</textarea>";
+  }
+
+  var has = answers[q.id]!==undefined && answers[q.id]!=="";
+  var isLast = currentQ===questions.length-1;
+  var bviz = currentQ===0 ? " style=\"opacity:0;pointer-events:none\"" : "";
+  var ncls = isLast ? "btn-next accent" : "btn-next";
+  var ntxt = isLast ? "Generate Roadmap &#x1F5FA;" : "Next &rarr;";
+  var dis  = has ? "" : " disabled";
+  var qn   = currentQ<9 ? "0"+(currentQ+1) : (currentQ+1);
+
+  document.getElementById("q-body").innerHTML =
+    "<div class=\"fade-up\">"+
+      "<div class=\"q-number\">"+qn+"</div>"+
+      "<div class=\"q-text\">"+q.text+"</div>"+
+      (q.hint?"<div class=\"q-hint\">"+q.hint+"</div>":"")+
+      optHTML+
+      "<div class=\"q-nav\">"+
+        "<button class=\"btn-ghost\""+bviz+" onclick=\"prevQuestion()\">&larr; Back</button>"+
+        "<button class=\""+ncls+"\" id=\"btn-next\" onclick=\"nextQuestion()\""+dis+">"+ntxt+"</button>"+
+      "</div>"+
+    "</div>";
+}
+
+function selectOption(v) { answers[questions[currentQ].id]=v; renderQuestion(); }
+function handleTextInput(v) {
+  answers[questions[currentQ].id]=v.trim();
+  var b=document.getElementById("btn-next");
+  if(b) b.disabled=v.trim()==="";
+}
+function nextQuestion() {
+  if(currentQ<questions.length-1){currentQ++;renderQuestion();}
+  else{buildRoadmap();showScreen("screen-roadmap");}
+}
+function prevQuestion() { if(currentQ>0){currentQ--;renderQuestion();} }
+function restartApp() { answers={}; currentQ=0; showScreen("screen-welcome"); }
+
+/* ════════════════════════════════
+   ROADMAP BUILDER
+════════════════════════════════ */
+function buildRoadmap() {
+  var a = answers;
+  var name = a.name || "Student";
+
+  var branchMap = {
+    cse:   "Computer Science and Engineering",
+    it:    "Information Technology",
+    aids:  "AI and Data Science",
+    csai:  "CS with Artificial Intelligence",
+    cyber: "Cyber Security",
+    ee:    "Electrical Engineering",
+    me:    "Mechanical Engineering",
+    ce:    "Civil Engineering"
+  };
+  var branch = branchMap[a.interest]||"Engineering";
+  var goalMap = {
+    job:"Placement track", higher:"Higher studies track",
+    govt:"Govt and PSU aspirant track", startup:"Entrepreneurship track",
+    research:"Research and academia track"
+  };
+
+  document.getElementById("rm-name").textContent = name;
+  document.getElementById("rm-tagline").textContent = branch+" \u00B7 "+( goalMap[a.goal]||"");
+
+  /* ── Personality summary card ── */
+  document.getElementById("rm-personality-card").innerHTML = buildPersonalityCard(a, name);
+
+  /* ── Chips ── */
+  var branchShortMap = {cse:"CSE",it:"IT",aids:"AI and DS",csai:"CS-AI",cyber:"Cyber Sec",ee:"EE",me:"ME",ce:"CE"};
+  var brChip = branchShortMap[a.interest]||branch.split(" ")[0];
+  var hobbyCap = a.hobby ? (a.hobby.charAt(0).toUpperCase()+a.hobby.slice(1)) : "";
+  var persCap  = a.personality ? (a.personality.charAt(0).toUpperCase()+a.personality.slice(1)) : "";
+  var chips=[
+    {label:brChip, color:"blue"},
+    {label:a.marks==="high"?"Merit Student":a.marks==="mid-high"?"Good Record":"Needs Focus", color:"orange"},
+    {label:(goalMap[a.goal]||"").split(" ")[0], color:"green"},
+    {label:persCap, color:"purple"},
+    {label:hobbyCap, color:"pink"}
+  ];
+  var cHTML="";
+  for(var i=0;i<chips.length;i++) if(chips[i].label) cHTML+="<span class=\"chip "+chips[i].color+"\">"+chips[i].label+"</span>";
+  document.getElementById("rm-chips").innerHTML=cHTML;
+
+  /* ── Combined Timeline ── */
+  var techData  = getTechData(a);
+  var groomData = getGroomData(a);
+  var dotCls=["y1","y2","y3","y4"];
+  var yrLbl=["Year 1","Year 2","Year 3","Year 4"];
+  var yrTheme=["Foundation","Core Concepts","Specialisation","Launch"];
+  var tHTML="";
+  for(var y=0;y<4;y++){
+    var td=techData[y]; var gd=groomData[y];
+    var tiHTML=""; for(var k=0;k<td.items.length;k++) tiHTML+="<div class=\"mini-item\"><div class=\"mini-dot\" style=\"background:"+td.color+"\"></div><span>"+td.items[k]+"</span></div>";
+    var giHTML=""; for(var k=0;k<gd.items.length;k++) giHTML+="<div class=\"mini-item\"><div class=\"mini-dot\" style=\"background:#7c3aed\"></div><span>"+gd.items[k]+"</span></div>";
+    tHTML+=
+      "<div class=\"year-row\">"+
+        "<div class=\"year-spine\">"+
+          "<div class=\"year-dot "+dotCls[y]+"\">"+(y+1)+"</div>"+
+          (y<3?"<div class=\"year-connector\"></div>":"")+
+        "</div>"+
+        "<div class=\"year-cards\">"+
+          "<div class=\"year-theme-label\">"+yrLbl[y]+" &mdash; "+yrTheme[y]+"</div>"+
+          "<div class=\"dual-cards\">"+
+            "<div class=\"mini-card\"><div class=\"mini-card-head tech\">&#x1F4BB; Technical</div><div class=\"mini-items\">"+tiHTML+"</div></div>"+
+            "<div class=\"mini-card\"><div class=\"mini-card-head groom\">&#x1F31F; Grooming</div><div class=\"mini-items\">"+giHTML+"</div></div>"+
+          "</div>"+
+        "</div>"+
+      "</div>";
+  }
+  document.getElementById("rm-timeline").innerHTML=tHTML;
+
+  /* ── Govt Jobs ── */
+  var govtJobs=getGovtJobs(a);
+  var gHTML="";
+  for(var i=0;i<govtJobs.length;i++){
+    var gj=govtJobs[i];
+    gHTML+="<div class=\"govt-card\">"+
+      "<div class=\"govt-card-title\">"+gj.title+"</div>"+
+      "<div class=\"govt-card-org\">"+gj.org+"</div>"+
+      "<span class=\"govt-card-exam\">"+gj.exam+"</span>"+
+      "</div>";
+  }
+  document.getElementById("rm-govt").innerHTML=gHTML;
+
+  /* ── Careers ── */
+  var careers=getCareers(a);
+  var caHTML="";
+  for(var i=0;i<careers.length;i++){
+    var c=careers[i];
+    var mc=c.match==="High Match"?"career-match high":"career-match";
+    caHTML+="<div class=\"career-card\"><div class=\"career-icon\">"+c.icon+"</div>"+
+            "<div class=\"career-title\">"+c.title+"</div>"+
+            "<div class=\"career-desc\">"+c.desc+"</div>"+
+            "<span class=\""+mc+"\">"+c.match+"</span></div>";
+  }
+  document.getElementById("rm-careers").innerHTML=caHTML;
+
+  /* ── Skills ── */
+  var skills=getSkills(a);
+  var skHTML="";
+  for(var i=0;i<skills.length;i++){
+    var sk=skills[i];
+    skHTML+="<div class=\"skill-row\">"+
+            "<div class=\"skill-name\">"+sk.name+"</div>"+
+            "<div class=\"skill-bar\"><div class=\"skill-fill\" style=\"background:"+sk.color+";width:"+sk.pct+"%\"></div></div>"+
+            "<div class=\"skill-pct\">"+sk.pct+"%</div></div>";
+  }
+  document.getElementById("rm-skills").innerHTML=skHTML;
+
+  /* ── Hobby Impact ── */
+  document.getElementById("rm-hobby").innerHTML=buildHobbySection(a);
+
+  /* ── Tips ── */
+  var tips=getTips(a);
+  var tpHTML="";
+  for(var i=0;i<tips.length;i++){
+    var tc=i%3===1?"tip-card blue":i%3===2?"tip-card green":"tip-card";
+    if(i===tips.length-1) tc="tip-card purple";
+    tpHTML+="<div class=\""+tc+"\">"+tips[i]+"</div>";
+  }
+  document.getElementById("rm-tips").innerHTML=tpHTML;
+}
+
+/* ── Personality Summary Card ── */
+function buildPersonalityCard(a, name) {
+  var persDesc = {
+    introvert:  "a deep thinker who does best work independently. Channel this through research, focused coding, or solo projects.",
+    ambivert:   "a versatile individual who can collaborate and work solo. Use this flexibility as a superpower in team settings and independent work.",
+    extrovert:  "a natural communicator and people person. Use this energy in leadership, client-facing roles, and building networks.",
+    leader:     "a born organiser with natural leadership tendencies. Take up committee roles, lead teams, and drive initiatives from Day 1."
+  };
+  var hobbyLink = {
+    sports:  "Your sporting discipline brings resilience and teamwork skills that will shine in group projects and high-pressure deadlines.",
+    music:   "Your musical creativity sharpens pattern recognition and emotional intelligence, both valuable in engineering and design roles.",
+    gaming:  "Your gaming mindset builds strategic thinking, quick decision-making, and persistence under pressure.",
+    writing: "Your writing habit will give you an edge in documentation, research papers, blogs, and professional communication.",
+    travel:  "Your exposure to diverse cultures enhances adaptability and empathy, key traits for global careers.",
+    social:  "Your social volunteering develops empathy, leadership, and community management skills that stand out in interviews.",
+    cooking: "Your cooking interest reflects creativity and precision, qualities that translate well into problem-solving and process engineering.",
+    tech:    "Your tinkering hobby directly complements your engineering studies and makes you a natural maker and innovator."
+  };
+  var pDesc = persDesc[a.personality]||"a unique individual with strong potential.";
+  var hLink = hobbyLink[a.hobby]||"Your hobbies build important transferable skills.";
+  return "<div class=\"personality-card\">"+
+    "<div class=\"personality-card-title\">Personalised Student Profile</div>"+
+    "<div class=\"personality-card-text\">"+
+      "<strong>"+name+"</strong> is "+pDesc+" "+hLink+
+      " With a focus on <strong>"+(answers.goal==="job"?"campus placements":answers.goal==="higher"?"higher studies":answers.goal==="govt"?"government and PSU opportunities":answers.goal==="startup"?"entrepreneurship":"research and academia")+"</strong>,"+
+      " this roadmap is tailored to build both technical depth and a well-rounded personality over 4 years."+
+    "</div>"+
+  "</div>";
+}
+
+/* ── Hobby Impact Section ── */
+function buildHobbySection(a) {
+  var hobbyData = {
+    sports: {
+      tags:["Team Player","Resilience","Discipline","Time Management"],
+      text:"Sports build the mental toughness that engineering demands. Your ability to perform under pressure, accept setbacks, and push through difficult phases will directly help during exam seasons and placement preparation. Leverage this in group discussions by demonstrating leadership and coordination skills."
+    },
+    music: {
+      tags:["Creativity","Pattern Recognition","Focus","Emotional Intelligence"],
+      text:"Music and engineering share more than people think. Both require pattern recognition, practice, and precision. Your musical background sharpens your ability to focus deeply, notice details, and think creatively when solving problems. It also makes you more empathetic and emotionally aware in team situations."
+    },
+    gaming: {
+      tags:["Strategic Thinking","Problem Solving","Quick Decisions","Persistence"],
+      text:"Gaming builds strategic thinking, systems thinking, and the ability to adapt quickly to changing conditions. These are directly valuable in coding challenges, hackathons, and engineering design. Many top tech recruiters appreciate candidates who can think like gamers when approaching complex problems."
+    },
+    writing: {
+      tags:["Communication","Documentation","Critical Thinking","Personal Brand"],
+      text:"Writing is one of the most underrated engineering skills. Your blogging or journaling habit builds clarity of thought and communication, which are critical for project reports, research papers, and professional emails. Starting a technical blog during college can significantly boost your placement or higher studies profile."
+    },
+    travel: {
+      tags:["Adaptability","Cultural Awareness","Curiosity","Networking"],
+      text:"Travel exposes you to diverse environments, people, and challenges. This builds adaptability and a broad worldview which are qualities valued in global companies and research collaborations. Your comfort with new environments will help you adjust quickly to new workplaces, cities, or countries for higher studies."
+    },
+    social: {
+      tags:["Empathy","Leadership","Community","Event Management"],
+      text:"Volunteering and social work demonstrate character and commitment beyond academics. These experiences develop empathy, project coordination, and the ability to work with people from all backgrounds. These traits score highly in HR interviews and scholarship applications for higher studies."
+    },
+    cooking: {
+      tags:["Precision","Creativity","Process Thinking","Patience"],
+      text:"Cooking reflects the same mindset as engineering: follow the process, experiment, refine, and deliver results. Your interest in cooking signals strong process thinking and patience, qualities that are directly applicable in chemical, food, and manufacturing engineering disciplines."
+    },
+    tech: {
+      tags:["Maker Mindset","Curiosity","Innovation","Self Learning"],
+      text:"Your tinkering and making hobby is a direct bridge to your engineering studies. Building and breaking things outside the classroom accelerates your hands-on learning far beyond what labs offer. This maker mindset is exactly what startup founders, R&D teams, and hackathon judges look for."
+    }
+  };
+  var hd = hobbyData[a.hobby] || {
+    tags:["Curiosity","Discipline","Creativity"],
+    text:"Whatever your hobby, the discipline and curiosity it builds will complement your engineering journey in unexpected ways. Reflect on the skills your hobby requires and consciously apply them to your academic and career goals."
+  };
+  var tagsHTML="";
+  for(var i=0;i<hd.tags.length;i++) tagsHTML+="<span class=\"hobby-tag\">"+hd.tags[i]+"</span>";
+  return "<div class=\"hobby-card\">"+
+    "<div class=\"hobby-card-title\">How your hobby shapes your career</div>"+
+    "<div class=\"hobby-tags\">"+tagsHTML+"</div>"+
+    "<div class=\"hobby-text\">"+hd.text+"</div>"+
+    "</div>";
+}
+
+/* ── Tech Data ── */
+function getTechData(a) {
+  var d = {
+    cse:[
+      {color:"#2563c9",items:["C Programming, Maths I and II, Physics basics","OOP fundamentals and Digital Logic","Join coding club, start competitive coding","Build first mini project in C or Python"]},
+      {color:"#1a9e6e",items:["Data Structures and Algorithms (DSA)","OOP in Java or C++, DBMS and SQL","Operating Systems, Computer Networks","Web Dev basics: HTML, CSS, JavaScript, Git"]},
+      {color:"#c9930a",items:["Choose elective: Cloud Computing, AI, Blockchain","Internship or open-source contribution","2 to 3 portfolio projects on GitHub","GATE CS prep or placement aptitude training"]},
+      {color:"#e85d26",items:["Capstone or Major project completion","Campus placement drives and interviews","Certifications: AWS, Google, Azure or domain-specific","Finalise LinkedIn, resume, and GitHub portfolio"]}
+    ],
+    it:[
+      {color:"#2563c9",items:["C Programming, Maths, and Digital Electronics","IT fundamentals: Hardware, OS, Networking basics","Python basics and scripting","Join IT or coding club on campus"]},
+      {color:"#1a9e6e",items:["Data Structures and Algorithms","Database Design, SQL and NoSQL","Web Technologies: JavaScript, Node.js, React","Software Engineering principles and SDLC"]},
+      {color:"#c9930a",items:["Choose: Full Stack, Cloud, IoT, or Data Analytics","Internship at software or IT services company","Build web or mobile app portfolio","GATE IT or aptitude preparation for placements"]},
+      {color:"#e85d26",items:["Final year IT project or system development","Placement drives: TCS, Infosys, Wipro, HCL, Accenture","Certifications: AWS Cloud Practitioner, Google IT Support","Finalise LinkedIn, resume, and portfolio"]}
+    ],
+    aids:[
+      {color:"#2563c9",items:["Python programming and Maths for AI (Linear Algebra, Stats)","Introduction to Data Science and AI","Probability and Statistics fundamentals","Join AI or Data Science club or Kaggle"]},
+      {color:"#1a9e6e",items:["Machine Learning algorithms and implementation","Data Wrangling with Pandas, NumPy, Matplotlib","SQL, NoSQL Databases, Big Data introduction","Deep Learning basics: TensorFlow or PyTorch"]},
+      {color:"#c9930a",items:["Choose: NLP, Computer Vision, Data Engineering, or BI","Internship at analytics or AI company","Kaggle competition or real dataset projects","GATE DA or placement aptitude preparation"]},
+      {color:"#e85d26",items:["Capstone: end-to-end ML or AI product","Placement: Amazon, Google, Jio, Mu Sigma, Fractal","Certifications: Google Data Analytics, IBM Data Science","Build public GitHub and Kaggle profile"]}
+    ],
+    csai:[
+      {color:"#2563c9",items:["Python, Maths for AI: Calculus, Linear Algebra, Stats","AI fundamentals: history, types, ethics","C or C++ for problem solving foundation","Join AI club, start competitive coding"]},
+      {color:"#1a9e6e",items:["Machine Learning and Deep Learning core algorithms","DSA for interviews and competitive programming","Computer Vision and Natural Language Processing basics","Cloud AI tools: AWS SageMaker, Google AI Platform"]},
+      {color:"#c9930a",items:["Choose: Generative AI, Reinforcement Learning, or MLOps","Internship at AI product company or research lab","Build AI project portfolio with demos","GATE CS or placement aptitude preparation"]},
+      {color:"#e85d26",items:["Capstone: AI application or research prototype","Placement: Google, Microsoft, Amazon, startups, DRDO","Certifications: TensorFlow Developer, AWS ML Specialty","Publish a project or paper if research-oriented"]}
+    ],
+    cyber:[
+      {color:"#2563c9",items:["Computer Networks, Operating Systems fundamentals","C and Python for security scripting","Linux command line and Bash scripting basics","Join Cyber club, create TryHackMe or HackTheBox account"]},
+      {color:"#1a9e6e",items:["Network Security, Cryptography, and Ethical Hacking","Web Application Security: OWASP Top 10","Digital Forensics and Incident Response basics","Learn tools: Wireshark, Nmap, Metasploit, Burp Suite"]},
+      {color:"#c9930a",items:["Choose: Penetration Testing, SOC Analysis, or Cloud Security","Bug bounty programs and CTF competitions","Internship at cybersecurity firm or CERT-IN partner","CEH or CompTIA Security Plus certification preparation"]},
+      {color:"#e85d26",items:["Capstone: Security audit or vulnerability research","Placement: KPMG, Deloitte, Wipro Cyber, government CERT","Certifications: CEH, CompTIA Security Plus, OSCP","Govt options: DRDO, NIC, CERT-IN, cyber cell recruitment"]}
+    ],
+    ee:[
+      {color:"#2563c9",items:["Maths, Physics, Basic Electrical Circuit Theory","Network Analysis and Electrical Measurements lab","Join IEI or power club on campus","Python or MATLAB basics for simulation"]},
+      {color:"#1a9e6e",items:["Electrical Machines, Power Systems, Control Systems","Power Electronics and Drives","MATLAB and Simulink for power system simulation","Renewable Energy Technology fundamentals"]},
+      {color:"#c9930a",items:["Choose: Power Systems, Renewable Energy, EV, or Control","Internship: NTPC, PGCIL, TATA Power, state DISCOM","GATE EE preparation from Year 3","Solar or Wind energy project for portfolio"]},
+      {color:"#e85d26",items:["Major project: Smart Grid, EV Charging, or Microgrid","Placements: BHEL, NTPC, Siemens, ABB, Schneider","GATE EE score for PGCIL, BHEL, AAI, NTPC","Higher studies: MS in Power Systems or Energy Engg."]}
+    ],
+    me:[
+      {color:"#2563c9",items:["Engineering Drawing and Manufacturing basics","Workshop practice, Maths, and Physics","Join SAE or Baja student club","AutoCAD 2D drafting and sketching basics"]},
+      {color:"#1a9e6e",items:["Thermodynamics, Fluid Mechanics, Strength of Materials","Machine Design and Theory of Machines","CAD software: SolidWorks, CATIA, or Fusion 360","FEA analysis using ANSYS fundamentals"]},
+      {color:"#c9930a",items:["Choose: Robotics, Automobile, Thermal, or Production","Internship in automotive, aerospace, or manufacturing","SAE BAJA or Formula Student participation","GATE ME preparation from Year 3"]},
+      {color:"#e85d26",items:["Capstone: EV component, robot, or thermal system","Placements: L and T, BHEL, Tata Motors, HAL, ISRO","GATE ME score for M.Tech or PSU recruitment","Six Sigma or PMP certification for industry roles"]}
+    ],
+    ce:[
+      {color:"#2563c9",items:["Engineering Maths, Physics, and Surveying basics","Levelling practicals and AutoCAD 2D drafting","Site visits and construction material awareness","Join civil or NSS club for field exposure"]},
+      {color:"#1a9e6e",items:["Structural Analysis, Geotechnical Engineering","Concrete Technology and Transportation Engineering","STAAD.Pro or ETABS structural software","Environmental Engineering and Water Resources"]},
+      {color:"#c9930a",items:["Choose: Structural, Environmental, Smart Cities, or Highways","Internship at CPWD, PWD, or construction firm","BIM with Revit and MS Project for project management","GATE Civil or UPSC AE preparation from Year 3"]},
+      {color:"#e85d26",items:["Capstone: Bridge, building, or water treatment design","Placements: L and T, Shapoorji, NHAI, infrastructure firms","Govt options: CPWD, PWD, NMRC, DMRC, Smart City","Optional: MS abroad in Structural or Environmental Engg."]}
+    ]
+  };
+  return d[a.interest]||d.cse;
+}
+
+/* ── Grooming Data ── */
+function getGroomData(a) {
+  var pers = a.personality||"ambivert";
+  var y1 = {
+    introvert:  ["Practise speaking in class and group chats","Build a daily English journaling habit","Read one self-help book per month","Set goals and track in a planner"],
+    ambivert:   ["Speak up in at least one class per day","Join one club for structured social time","Build a consistent daily study routine","Read one book per month"],
+    extrovert:  ["Channel energy into constructive discussions","Learn to listen actively and not interrupt","Develop focus for solo study sessions","Build a routine to manage social time"],
+    leader:     ["Take on a small team leadership role","Develop patience and listening skills","Read a book on leadership or management","Understand team dynamics and conflict resolution"]
+  };
+  var y2 = {
+    introvert:  ["Join debate or elocution to build confidence","Practise mock presentations in mirror","Write a monthly technical blog post","Develop email and formal writing skills"],
+    ambivert:   ["Take up public speaking in seminars","Lead a small project or event sub-team","Start a technical or hobby blog","Learn professional email and report writing"],
+    extrovert:  ["Develop structured public speaking skills","Take on formal leadership in club events","Start documenting ideas as blog posts","Learn formal writing and presentation skills"],
+    leader:     ["Lead a technical club or cultural event","Develop mentoring skills with juniors","Write articles to build thought leadership","Learn project management and delegation"]
+  };
+  var y3base = ["Build professional LinkedIn profile","Learn corporate email and meeting etiquette","Practise group discussion formats","Develop emotional intelligence and empathy"];
+  var y4base = {
+    job:      ["Practise mock interviews using STAR method","Build a 60-second personal pitch","Polish resume with strong action verbs","Develop confident posture and eye contact"],
+    higher:   ["Practise Statement of Purpose writing","Develop academic presentation skills","Build research communication confidence","Prepare for GRE verbal and AWA sections"],
+    govt:     ["Practise group discussions for SSB or interviews","Develop clear and concise written communication","Work on structured paragraph and essay writing","Build confidence for viva and oral examinations"],
+    startup:  ["Practise investor pitch and storytelling","Build negotiation and persuasion skills","Work on product demo presentation skills","Develop resilience and rejection handling mindset"],
+    research: ["Practise conference paper presentation","Develop academic discussion and argumentation","Build clarity in technical explanation","Work on research poster and seminar skills"]
+  };
+  return [
+    {items: y1[pers]||y1.ambivert},
+    {items: y2[pers]||y2.ambivert},
+    {items: y3base},
+    {items: y4base[a.goal]||y4base.job}
+  ];
+}
+
+/* ── Govt Jobs ── */
+function getGovtJobs(a) {
+  var all = {
+    cse:[
+      {title:"Software Engineer",         org:"DRDO (Defence R&D Organisation)",       exam:"DRDO CEPTAM or SET"},
+      {title:"Scientific Officer IT",     org:"ISRO (Space Applications Centre)",       exam:"ISRO Centralised Recruitment"},
+      {title:"Junior Analyst",            org:"NIC (National Informatics Centre)",      exam:"NIC Recruitment Exam"},
+      {title:"IT Officer Grade A",        org:"RBI and Nationalised Banks",             exam:"IBPS IT Officer Exam"}
+    ],
+    it:[
+      {title:"Technical Officer IT",      org:"ECIL, BEL, HAL (Defence PSUs)",         exam:"GATE CS or Direct Exam"},
+      {title:"System Analyst",            org:"NIC (Govt IT Infrastructure)",           exam:"NIC Specialist Exam"},
+      {title:"IT Officer",                org:"NABARD, SBI, Bank of Baroda",            exam:"IBPS Specialist Officer"},
+      {title:"AE Information Technology", org:"State Govt IT Depts and BSNL",          exam:"State PSC or BSNL JE"}
+    ],
+    aids:[
+      {title:"Data Scientist",            org:"NITI Aayog and MeitY Initiatives",       exam:"MeitY Direct Recruitment"},
+      {title:"AI Research Scientist",     org:"C-DAC (Centre for Dev. of Adv. Computing)",exam:"C-DAC Recruitment Exam"},
+      {title:"Scientific Officer",        org:"DRDO (AI and Data Science Labs)",        exam:"DRDO CEPTAM SET"},
+      {title:"Statistical Officer",       org:"CSO, MOSPI, and Govt Ministries",        exam:"SSC Statistical Exam"}
+    ],
+    csai:[
+      {title:"AI Research Officer",       org:"C-DAC and IIT Govt Labs",               exam:"C-DAC or GATE CS"},
+      {title:"Scientific Officer AI",     org:"DRDO (Artificial Intelligence Labs)",    exam:"DRDO CEPTAM"},
+      {title:"Technical Officer",         org:"ISRO (AI and Automation Division)",      exam:"ISRO Centralised Exam"},
+      {title:"Junior Research Fellow",    org:"DST, DBT, and Govt Research Projects",  exam:"GATE CS + Interview"}
+    ],
+    cyber:[
+      {title:"Cyber Security Analyst",    org:"CERT-IN (Indian Computer Emergency Response)",exam:"MeitY Direct Recruitment"},
+      {title:"Security Analyst",          org:"DRDO (Cyber Intelligence Labs)",         exam:"DRDO CEPTAM SET"},
+      {title:"Technical Officer",         org:"NIC (Network Security Division)",        exam:"NIC Recruitment Exam"},
+      {title:"Cyber Inspector",           org:"State Cyber Crime Cells and CBI",        exam:"State Police Technical Exam"}
+    ],
+    ee:[
+      {title:"Executive Engineer",        org:"PGCIL (Power Grid Corp of India)",       exam:"GATE EE Score"},
+      {title:"Management Trainee",        org:"NTPC (National Thermal Power Corp)",     exam:"GATE EE Score"},
+      {title:"Junior Engineer Electrical",org:"SSC JE, CPWD, State DISCOMs",           exam:"SSC JE Exam"},
+      {title:"AE Electrical",             org:"BHEL, BEL, ECIL, AAI",                  exam:"GATE EE + Interview"}
+    ],
+    me:[
+      {title:"Junior Engineer Mech",      org:"SSC JE, CPWD, Indian Railways",         exam:"SSC JE Exam"},
+      {title:"Engineer Trainee",          org:"BHEL (Heavy Electricals Ltd)",           exam:"GATE ME Score"},
+      {title:"Graduate Apprentice",       org:"HAL (Hindustan Aeronautics Ltd)",        exam:"GATE ME or HAL Exam"},
+      {title:"AE Mechanical",             org:"DRDO, ISRO, BARC, Defence Labs",         exam:"GATE ME + Interview"}
+    ],
+    ce:[
+      {title:"Assistant Engineer Civil",  org:"CPWD (Central Public Works Dept)",       exam:"SSC JE or UPSC AEE"},
+      {title:"Junior Engineer",           org:"DMRC, NMRC, Indian Railways, NHAI",      exam:"RRB JE Civil Exam"},
+      {title:"AE or JE Civil",            org:"State PWD, MES, Smart City Mission",     exam:"State PSC or GATE Civil"},
+      {title:"Technical Expert",          org:"RERA, AMRUT, Housing Ministry",          exam:"State Govt Recruitment"}
+    ]
+  };
+  return (all[a.interest]||all.cs).slice(0,4);
+}
+
+/* ── Private Careers ── */
+function getCareers(a) {
+  var all = {
+    cs:[
+      {icon:"&#x1F916;",title:"AI and ML Engineer",    desc:"Build intelligent systems and models",       match:"High Match"},
+      {icon:"&#x1F310;",title:"Full Stack Developer",  desc:"End-to-end web and mobile applications",     match:"High Match"},
+      {icon:"&#x1F512;",title:"Cybersecurity Analyst", desc:"Protect systems and data from attacks",      match:"Good Match"},
+      {icon:"&#x2601;", title:"Cloud Architect",       desc:"Infrastructure on AWS, Azure, or GCP",       match:"Good Match"}
+    ],
+    electronics:[
+      {icon:"&#x1F50C;",title:"Embedded Engineer",    desc:"Program microcontrollers and IoT products",  match:"High Match"},
+      {icon:"&#x1F4A1;",title:"VLSI Design Engineer", desc:"Design chips for semiconductor industry",    match:"High Match"},
+      {icon:"&#x1F4E1;",title:"RF and Comm. Engineer",desc:"5G, wireless comms, and antenna systems",    match:"Good Match"},
+      {icon:"&#x1F916;",title:"Robotics Engineer",    desc:"Automation and robotic systems for industry",match:"Good Match"}
+    ],
+    mechanical:[
+      {icon:"&#x1F697;",title:"Automotive Engineer",   desc:"Vehicle design and EV powertrain focus",    match:"High Match"},
+      {icon:"&#x2708;", title:"Aerospace Engineer",    desc:"Aircraft, spacecraft, propulsion systems",  match:"High Match"},
+      {icon:"&#x1F3ED;",title:"Manufacturing Engineer",desc:"Lean, automation, and production process",  match:"Good Match"},
+      {icon:"&#x1F916;",title:"Robotics and Automation",desc:"Industrial robots and assembly lines",     match:"Good Match"}
+    ],
+    civil:[
+      {icon:"&#x1F3D7;",title:"Structural Engineer",   desc:"Design buildings, bridges, infrastructure", match:"High Match"},
+      {icon:"&#x1F30D;",title:"Environmental Engr.",   desc:"Water treatment, sustainability, waste mgmt",match:"High Match"},
+      {icon:"&#x1F3D9;",title:"Urban Planner",         desc:"Smart cities and urban development",        match:"Good Match"},
+      {icon:"&#x1F6E3;",title:"Transportation Engr.",  desc:"Highways, metro rails, transport networks", match:"Good Match"}
+    ],
+    chemical:[
+      {icon:"&#x1F6E2;",title:"Process Engineer",      desc:"Optimise industrial chemical processes",    match:"High Match"},
+      {icon:"&#x1F48A;",title:"Pharmaceutical Engr.",  desc:"Drug manufacturing and quality processes",  match:"High Match"},
+      {icon:"&#x1F331;",title:"Environmental Chemist", desc:"Pollution control and green chemistry",     match:"Good Match"},
+      {icon:"&#x1F9EC;",title:"Materials Scientist",   desc:"New materials for electronics, aerospace",  match:"Good Match"}
+    ],
+  };
+  return (all[a.interest]||all.cse).slice(0,4);
+}
+
+/* ── Private Careers ── */
+function getCareers(a) {
+  var all = {
+    cse:[
+      {icon:"&#x1F916;",title:"AI and ML Engineer",    desc:"Build intelligent systems and models",       match:"High Match"},
+      {icon:"&#x1F310;",title:"Full Stack Developer",  desc:"End-to-end web and mobile applications",     match:"High Match"},
+      {icon:"&#x1F512;",title:"Cybersecurity Analyst", desc:"Protect systems and data from attacks",      match:"Good Match"},
+      {icon:"&#x2601;", title:"Cloud Architect",       desc:"Infrastructure on AWS, Azure, or GCP",       match:"Good Match"}
+    ],
+    it:[
+      {icon:"&#x1F310;",title:"Full Stack Developer",  desc:"End-to-end web and mobile applications",     match:"High Match"},
+      {icon:"&#x2601;", title:"Cloud Engineer",        desc:"Manage and deploy cloud infrastructure",      match:"High Match"},
+      {icon:"&#x1F4F1;",title:"Mobile App Developer",  desc:"Android or iOS application development",     match:"Good Match"},
+      {icon:"&#x1F4CA;",title:"Business Analyst",      desc:"Bridge between business needs and IT systems",match:"Good Match"}
+    ],
+    aids:[
+      {icon:"&#x1F4CA;",title:"Data Scientist",        desc:"Derive insights from large datasets",         match:"High Match"},
+      {icon:"&#x1F916;",title:"ML Engineer",           desc:"Build and deploy machine learning systems",   match:"High Match"},
+      {icon:"&#x1F4C8;",title:"Data Analyst",          desc:"Analyse business data and create dashboards", match:"Good Match"},
+      {icon:"&#x1F4E6;",title:"Data Engineer",         desc:"Build data pipelines and warehouses",         match:"Good Match"}
+    ],
+    csai:[
+      {icon:"&#x1F916;",title:"AI Product Engineer",   desc:"Build AI-powered applications and products",  match:"High Match"},
+      {icon:"&#x1F9E0;",title:"GenAI Developer",       desc:"Work with LLMs, RAG, and AI agents",          match:"High Match"},
+      {icon:"&#x1F4F7;",title:"Computer Vision Engr.", desc:"Image recognition and video analytics",       match:"Good Match"},
+      {icon:"&#x1F5E3;",title:"NLP Engineer",          desc:"Language models, chatbots, and text analytics",match:"Good Match"}
+    ],
+    cyber:[
+      {icon:"&#x1F510;",title:"Penetration Tester",    desc:"Ethically hack systems to find vulnerabilities",match:"High Match"},
+      {icon:"&#x1F6E1;",title:"SOC Analyst",           desc:"Monitor and respond to security incidents",   match:"High Match"},
+      {icon:"&#x1F575;",title:"Digital Forensics Engr.",desc:"Investigate cyber crimes and collect evidence",match:"Good Match"},
+      {icon:"&#x2601;", title:"Cloud Security Engr.",  desc:"Secure cloud infrastructure and data",        match:"Good Match"}
+    ],
+    ee:[
+      {icon:"&#x26A1;", title:"Power Systems Engr.",   desc:"Electricity transmission and distribution",   match:"High Match"},
+      {icon:"&#x1F50B;",title:"EV and Battery Engr.",  desc:"EV powertrain and battery technology",        match:"High Match"},
+      {icon:"&#x2600;", title:"Renewable Energy Engr.",desc:"Solar, wind, and energy storage systems",     match:"Good Match"},
+      {icon:"&#x1F3ED;",title:"Instrumentation Engr.", desc:"Control and measurement systems",             match:"Good Match"}
+    ],
+    me:[
+      {icon:"&#x1F697;",title:"Automotive Engineer",   desc:"Vehicle design and EV powertrain focus",      match:"High Match"},
+      {icon:"&#x2708;", title:"Aerospace Engineer",    desc:"Aircraft, spacecraft, propulsion systems",    match:"High Match"},
+      {icon:"&#x1F3ED;",title:"Manufacturing Engineer",desc:"Lean, automation, and production process",    match:"Good Match"},
+      {icon:"&#x1F916;",title:"Robotics and Automation",desc:"Industrial robots and assembly lines",       match:"Good Match"}
+    ],
+    ce:[
+      {icon:"&#x1F3D7;",title:"Structural Engineer",   desc:"Design buildings, bridges, infrastructure",   match:"High Match"},
+      {icon:"&#x1F30D;",title:"Environmental Engr.",   desc:"Water treatment, sustainability, waste mgmt", match:"High Match"},
+      {icon:"&#x1F3D9;",title:"Urban Planner",         desc:"Smart cities and sustainable urban development",match:"Good Match"},
+      {icon:"&#x1F6E3;",title:"Transportation Engr.",  desc:"Highways, metro rails, transport networks",   match:"Good Match"}
+    ]
+  };
+  return all[a.interest]||all.cse;
+}
+
+/* ── Skills ── */
+function getSkills(a) {
+  var base=[
+    {name:"Core Engineering",pct:90,color:"#2563c9"},
+    {name:"Problem Solving",pct:85,color:"#1a9e6e"},
+    {name:"Communication",pct:70,color:"#c9930a"},
+    {name:"Domain Software",pct:80,color:"#e85d26"},
+    {name:"Project Mgmt",pct:65,color:"#7c3aed"}
+  ];
+  if(a.interest==="cse"||a.interest==="it"||a.interest==="aids"||a.interest==="csai"||a.interest==="cyber") base[3]={name:"DSA and Coding",pct:85,color:"#e85d26"};
+  if(a.interest==="aids"||a.interest==="csai") base[3]={name:"ML and Data Skills",pct:88,color:"#e85d26"};
+  if(a.interest==="cyber") base[3]={name:"Security Tools",pct:85,color:"#e85d26"};
+  if(a.goal==="higher")    base[4]={name:"GATE or GRE Prep", pct:80,color:"#7c3aed"};
+  if(a.goal==="startup")   base[4]={name:"Business Acumen",  pct:70,color:"#7c3aed"};
+  if(a.goal==="research")  base[4]={name:"Research Writing", pct:75,color:"#7c3aed"};
+  if(a.goal==="govt")      base[4]={name:"Aptitude and GK",  pct:80,color:"#7c3aed"};
+  if(a.hobby==="writing")  base[2]={name:"Written Communication",pct:85,color:"#c9930a"};
+  if(a.hobby==="sports")   base[2]={name:"Team Leadership",  pct:80,color:"#c9930a"};
+  if(a.personality==="leader") base[4]={name:"Leadership and EQ",pct:82,color:"#7c3aed"};
+  return base.slice(0,5);
+}
+
+/* ── Tips ── */
+function getTips(a) {
+  var tips=["Maintain a CGPA above 7.5 consistently. It opens doors for placements, higher studies, and government PSUs."];
+  if(a.goal==="job")      tips.push("Start LeetCode or HackerRank from Semester 3. Aim for 200 plus problems before 4th year placement season.");
+  if(a.goal==="higher")   tips.push("Target GATE in 4th year. Start from Year 2. Score is valid 3 years for M.Tech and PSU recruitment.");
+  if(a.goal==="govt")     tips.push("Apply for GATE and SSC JE simultaneously from Year 3. Many PSUs recruit directly through GATE score.");
+  if(a.goal==="startup")  tips.push("Apply to college incubation cells in Year 3. NITs and IITs offer seed funding and mentorship programs.");
+  if(a.goal==="research") tips.push("Approach professors for research projects from Year 2. One conference paper before graduation is a strong differentiator.");
+  if(a.challenge==="maths")  tips.push("Attend extra maths classes in Year 1 without fail. NPTEL has excellent free courses to strengthen fundamentals.");
+  if(a.challenge==="coding") tips.push("Start with Python on platforms like CodeWithHarry or CS50. Build logic before jumping directly into DSA.");
+  if(a.challenge==="social") tips.push("Speak at least once in every class or lab session. Daily small actions compound into massive confidence over 4 years.");
+  if(a.personality==="introvert") tips.push("Being an introvert is a strength. Use it to produce deeper, higher-quality work. Build confidence in low-stakes settings first.");
+  if(a.hobby==="gaming") tips.push("Participate in competitive programming and hackathons. Your gaming-trained strategic mind is a major asset in these formats.");
+  if(a.hobby==="writing") tips.push("Start a technical blog on Medium or Hashnode from Year 1. Recruiters and professors love candidates with a documented thought process.");
+  tips.push("Build your LinkedIn profile from Day 1 and connect with seniors, professors, and alumni. Most opportunities come through people, not portals.");
+  return tips.slice(0,5);
+}
+</script>
+</body>
+</html>
